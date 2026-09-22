@@ -1,9 +1,19 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware  # <-- ADD THIS IMPORT
 import joblib
 import pandas as pd
 from .schemas import CreditApplication
 
 app = FastAPI(title="RiskOps Engine API", version="1.0")
+
+# <-- ADD THIS ENTIRE MIDDLEWARE BLOCK -->
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all domains/ports to access the API
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load model globally so it initializes immediately on server startup
 try:
